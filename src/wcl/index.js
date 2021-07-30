@@ -27,13 +27,14 @@ console.log('See `wlDPSStats` to view consolidated stats.');
 export default function ProviderChars(props) {
 	const [lsChars, lsSetChars] = useLocalStorage('wlTrackedChars', []);
 	const [apiChars, apiSetChars] = useState([]);
+	const { hasId } = props;
 
 	useEffect(async () => {
-		const resp = props.id ? await api.get('/chars/' + props.id) : null;
+		const resp = hasId ? await api.get('/chars/' + props.id) : null;
 		if (resp?.data) {
-			apiSetChars(resp.data.characters);
+			apiSetChars(resp.data.characters || []);
 		}
-	}, [props.id]);
+	}, [hasId, props.id]);
 
 	async function onApiSetChars(characters) {
 		const resp = await api.put('/chars/' + props.id, {
@@ -48,8 +49,8 @@ export default function ProviderChars(props) {
 	return (
 		<Index
 			{...props}
-			chars={props.id ? apiChars : lsChars}
-			setChars={props.id ? onApiSetChars : lsSetChars}
+			chars={hasId ? apiChars : lsChars}
+			setChars={hasId ? onApiSetChars : lsSetChars}
 		/>
 	);
 }

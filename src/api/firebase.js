@@ -50,5 +50,5 @@ export async function updateCharsById(id, chars) {
     throw new Error('Cannot update characters without characters as input');
   }
   const docRef = db.doc('stats-page/' + id);
-  return await docRef.update({ characters: chars });
+  return await docRef.set({ characters: chars }, { merge: true });
 }
