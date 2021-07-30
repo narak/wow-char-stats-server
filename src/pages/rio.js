@@ -1,4 +1,4 @@
-import Layout, { Tabs } from '../components/common/Layout';
+import Layout, { Tabs } from '../common/Layout';
 import RaiderIO from '../rio';
 
 export default function Rio() {

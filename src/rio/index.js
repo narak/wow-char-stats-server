@@ -1,6 +1,6 @@
 import styles from './index.module.css';
 
-import useLocalStorage from '../../utils/useLocalStorage';
+import useLocalStorage from '../utils/useLocalStorage';
 
 import { Layout } from 'antd';
 import AddChar from '../common/AddChar';

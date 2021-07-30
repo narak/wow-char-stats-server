@@ -3,7 +3,7 @@ import styles from './char.module.css';
 import { Fragment } from 'react';
 import styled from 'styled-components';
 
-import useRaiderIOStats from '../../utils/useRaiderIOStats';
+import useRaiderIOStats from '../utils/useRaiderIOStats';
 import { DeleteFilled } from '@ant-design/icons';
 import { Card, Avatar, Divider } from 'antd';
 
@@ -38,12 +38,7 @@ export default function Char({ char, onDelete }) {
 	const title = (
 		<>
 			<Avatar src={rio.thumbnail_url} className={styles.avatar} />
-			<a
-				href={rio.profile_url}
-				target="_blank"
-				rel="noreferrer"
-				className={styles.avatarAnnex}
-			>
+			<a href={rio.profile_url} target="_blank" rel="noreferrer" className={styles.avatarAnnex}>
 				<strong>{rio.name}</strong>
 				<small style={{ marginLeft: '10px' }}>
 					{rio.race} {rio.class}
