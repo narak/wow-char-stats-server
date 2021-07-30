@@ -30,7 +30,7 @@ export default function ProviderChars(props) {
 	const { hasId } = props;
 
 	useEffect(async () => {
-		const resp = hasId ? await api.get('/chars/' + props.id) : null;
+		const resp = hasId && props.id ? await api.get('/chars/' + props.id) : null;
 		if (resp?.data) {
 			apiSetChars(resp.data.characters || []);
 		}
