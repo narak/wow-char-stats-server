@@ -35,10 +35,20 @@ const db = admin.firestore();
 //   });
 // });
 
-export async function getStatsPage(id) {
+export async function getCharsById(id) {
   if (!id) {
-    throw new Error('Cannot fetch stats page without ID');
+    throw new Error('Cannot fetch characters without ID');
   }
-  const snapshot = await db.doc('stats-page/' + id).get();
-  return snapshot;
+  return await db.doc('stats-page/' + id).get();
+}
+
+export async function updateCharsById(id, chars) {
+  if (!id) {
+    throw new Error('Cannot update characters without ID');
+  }
+  if (!chars) {
+    throw new Error('Cannot update characters without characters as input');
+  }
+  const docRef = db.doc('stats-page/' + id);
+  return await docRef.update({ characters: chars });
 }

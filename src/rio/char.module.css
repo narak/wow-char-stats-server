@@ -1,0 +1,65 @@
+.avatarAnnex {
+	margin-left: 60px;
+}
+
+.avatar {
+	position: absolute;
+	opacity: 0.8;
+	top: 16px;
+	left: 20px;
+	height: 50px;
+	width: 50px;
+}
+
+.card:hover .icon {
+	opacity: 1;
+	visibility: visible;
+}
+
+.icon {
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity 200ms;
+
+	color: #b9b9b9;
+}
+
+.onHover {
+	position: absolute;
+	visibility: hidden;
+	pointer-events: none;
+	opacity: 0;
+	width: 100%;
+	left: 0;
+	bottom: 0;
+	transition: opacity 200ms;
+}
+
+.card:hover .onHover {
+	pointer-events: auto;
+	visibility: visible;
+	opacity: 1;
+}
+
+.mainScore {
+	position: absolute;
+	top: 20px;
+	right: 27px;
+	transition: opacity 200ms;
+	font-weight: 700;
+	font-size: 1.4rem;
+}
+
+.delete svg {
+	width: 20px;
+	height: 20px;
+}
+
+.subscore {
+	margin-right: 10px;
+}
+
+.grid {
+	display: grid;
+	grid-template-columns: auto auto auto auto;
+}
