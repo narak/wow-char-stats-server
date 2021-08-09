@@ -133,6 +133,11 @@ function Index({ id, chars, setChars }) {
 		window.location.reload();
 	}
 
+	const scrollCfg = { x: 1500 };
+	if (typeof window !== 'undefined') {
+		scrollCfg.y = document.body.clientHeight - 400;
+	}
+
 	return (
 		<>
 			<div className={styles.copyPaste}>
@@ -182,12 +187,7 @@ function Index({ id, chars, setChars }) {
 						)}
 					</div>
 				) : null}
-				<Table
-					dataSource={dataSource}
-					columns={columns}
-					pagination={false}
-					scroll={{ x: 1440, y: 750 }}
-				/>
+				<Table dataSource={dataSource} columns={columns} pagination={false} scroll={scrollCfg} />
 			</Content>
 		</>
 	);
