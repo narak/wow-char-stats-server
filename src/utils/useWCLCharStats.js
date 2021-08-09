@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import useWCLAuthToken from './useWCLAuthToken';
 import promiseCache from './promiseCache';
 
 import { ZoneId, DifficultyId } from '../constants/WarcraftLogs';
@@ -32,7 +31,6 @@ const _cache = {};
 console.log('See `wlCharStats` to view fetched RIO data.');
 
 export default function useWCLCharStats({ zone, chars }) {
-	const token = useWCLAuthToken();
 	const [vals, setVals] = useState({});
 	const [_zone, setZone] = useState(zone);
 	if (zone !== _zone) {
@@ -42,12 +40,6 @@ export default function useWCLCharStats({ zone, chars }) {
 
 	useEffect(() => {
 		window.wlCharStats = _cache;
-		if (!token) {
-			return;
-		}
-		const config = {
-			headers: { Authorization: `Bearer ${token}` },
-		};
 
 		chars.forEach(char => {
 			const key = serialize(zone, char);
@@ -73,13 +65,9 @@ export default function useWCLCharStats({ zone, chars }) {
 			promiseCache(
 				() =>
 					axios
-						.post(
-							'https://www.warcraftlogs.com/api/v2/client',
-							{
-								query: query(zone, char),
-							},
-							config
-						)
+						.post('/api/wcl', {
+							query: query(zone, char),
+						})
 						.then(resp => resp?.data),
 				`${zone.id},${zone.difficulty},${char.name},${char.server},${char.region}`
 			)
@@ -104,7 +92,7 @@ export default function useWCLCharStats({ zone, chars }) {
 				})
 				.catch(console.error);
 		});
-	}, [zone, chars, token, vals]);
+	}, [zone, chars, vals]);
 
 	return vals;
 }
