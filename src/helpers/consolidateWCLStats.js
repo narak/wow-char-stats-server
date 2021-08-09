@@ -1,3 +1,4 @@
+import formatDate from '../utils/formatDate';
 import { ZoneId, DifficultyId } from '../constants/WarcraftLogs';
 import { ShortName } from '../constants/Boss';
 
@@ -14,7 +15,8 @@ function calcRanks({ byBoss, bosses }) {
 
 export function byBoss(allStats) {
   let byBoss = {},
-    bosses = {};
+    bosses = {},
+    syncedAt = {};
 
   for (const key in allStats) {
     const val = allStats[key];
@@ -22,6 +24,8 @@ export function byBoss(allStats) {
     if (val.isFetching) continue;
     const name = val.name,
       rankings = val.zoneRankings?.rankings;
+
+    syncedAt[name] = val.syncedAt;
 
     // eslint-disable-next-line
     byBoss[name] = rankings
@@ -44,7 +48,7 @@ export function byBoss(allStats) {
       : undefined;
   }
 
-  const o = { byBoss: byBoss, bosses: Object.keys(bosses) };
+  const o = { byBoss: byBoss, bosses: Object.keys(bosses), syncedAt };
   calcRanks(o);
   return o;
 }
@@ -94,9 +98,13 @@ export function getRows({ stats, bossMap, onDelete }) {
       fixed: 'left',
       render: (text, record) => {
         return (
-          <a href={getWclUrl(record)} target="_blank" rel="noreferrer">
-            {record.name}
-          </a>
+          <>
+            <a href={getWclUrl(record)} target="_blank" rel="noreferrer">
+              {record.name}
+            </a>
+            <br />
+            <small>{record.syncedAt ? formatDate(new Date(record.syncedAt)) : ''}</small>
+          </>
         );
       },
     },
@@ -125,6 +133,7 @@ export function getData({ stats, chars, bossMap, id: zoneId, difficulty }) {
         dataSource.push({
           Name: name,
           key: name,
+          syncedAt: stats.syncedAt[name],
           zoneId,
           difficulty,
           ...char,

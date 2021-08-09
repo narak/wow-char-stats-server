@@ -7,7 +7,7 @@ import { Zone, Difficulty } from '../constants/WarcraftLogs';
 import api from '../utils/api';
 import useLocalStorage from '../utils/useLocalStorage';
 import useWCLCharStats from '../utils/useWCLCharStats';
-import exportToCSV from '../helpers/exportToCSV';
+import exportToCSV from '../utils/exportToCSV';
 import { byBoss, getRows, getData } from '../helpers/consolidateWCLStats';
 import { dropCache } from '../utils/promiseCache';
 

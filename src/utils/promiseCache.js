@@ -14,6 +14,7 @@ export default function promiseCache(getPromise, cacheKey) {
     return new Promise(resolve => resolve(_cache[cacheKey]));
   } else {
     return getPromise().then(resp => {
+      resp.syncedAt = Date.now();
       set(cacheKey, resp);
       return resp;
     });

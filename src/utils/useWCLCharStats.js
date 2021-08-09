@@ -74,7 +74,7 @@ export default function useWCLCharStats({ zone, chars }) {
 				.then(data => {
 					const charData = data?.data?.characterData?.character;
 					_cache[key] = charData
-						? { ...charData, ...zone, ...char }
+						? { ...charData, ...zone, ...char, syncedAt: data.syncedAt }
 						: {
 								message: 'Found no character stats',
 								isError: true,
