@@ -7,6 +7,7 @@ import { Zone, Difficulty } from '../constants/WarcraftLogs';
 import api from '../utils/api';
 import useLocalStorage from '../utils/useLocalStorage';
 import useWCLCharStats from '../utils/useWCLCharStats';
+import exportToCSV from '../helpers/exportToCSV';
 import { byBoss, getRows, getData } from '../helpers/consolidateWCLStats';
 import { dropCache } from '../utils/promiseCache';
 
@@ -78,7 +79,7 @@ function Index({ id, chars, setChars }) {
 
 	useEffect(() => {
 		window.wlDPSStats = stats;
-	}, []);
+	}, [stats]);
 
 	function onAdd(char) {
 		let { name, server, region } = char;
@@ -123,6 +124,10 @@ function Index({ id, chars, setChars }) {
 		return getData({ stats, chars, bossMap, ...zone });
 	}, [stats, chars, bossMap, zone]);
 
+	const onGenerateCSV = useCallback(() => {
+		exportToCSV(columns, dataSource);
+	}, [columns, dataSource]);
+
 	function onDropCache() {
 		dropCache();
 		window.location.reload();
@@ -155,6 +160,15 @@ function Index({ id, chars, setChars }) {
 					onClick={onDropCache}
 				>
 					Refresh Stats
+				</Button>
+				<Button
+					style={{
+						float: 'right',
+					}}
+					type="text"
+					onClick={onGenerateCSV}
+				>
+					Export CSV
 				</Button>
 				{failedChars.length ? (
 					<div style={{ padding: '0 1px' }}>
