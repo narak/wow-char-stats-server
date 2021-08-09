@@ -34,7 +34,7 @@ function getToken(cb) {
 let _token, _tokenTime, _tokenExpiresOn;
 
 function isTokenValid() {
-  return _token && Date.now() < _tokenExpiresOn;
+  return _token && Date.now() < _tokenExpiresOn - 10000;
 }
 
 export default function getWCLAuthToken(req, res) {
