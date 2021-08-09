@@ -41,6 +41,7 @@ export default function useWCLCharStats({ zone, chars }) {
 	useEffect(() => {
 		window.wlCharStats = _cache;
 
+		const proms = [];
 		chars.forEach(char => {
 			const key = serialize(zone, char);
 
@@ -62,7 +63,7 @@ export default function useWCLCharStats({ zone, chars }) {
 				[key]: _cache[key],
 			}));
 
-			promiseCache(
+			const p = promiseCache(
 				() =>
 					axios
 						.post('/api/wcl', {
@@ -70,8 +71,20 @@ export default function useWCLCharStats({ zone, chars }) {
 						})
 						.then(resp => resp?.data),
 				`${zone.id},${zone.difficulty},${char.name},${char.server},${char.region}`
-			)
-				.then(data => {
+			);
+			p.then(data => {
+				data.key = key;
+				data.char = char;
+				return data;
+			}).catch(console.error);
+			proms.push(p);
+		});
+
+		proms.length &&
+			Promise.all(proms).then(results => {
+				const vals = {};
+				results.forEach(data => {
+					const { key, char } = data;
 					const charData = data?.data?.characterData?.character;
 					_cache[key] = charData
 						? { ...charData, ...zone, ...char, syncedAt: data.syncedAt }
@@ -85,13 +98,10 @@ export default function useWCLCharStats({ zone, chars }) {
 					if (data?.errors) {
 						console.error(data.errors.map(e => e.message));
 					}
-					setVals(vals => ({
-						...vals,
-						[key]: _cache[key],
-					}));
-				})
-				.catch(console.error);
-		});
+					vals[key] = _cache[key];
+				});
+				setVals(vals);
+			});
 	}, [zone, chars, vals]);
 
 	return vals;
