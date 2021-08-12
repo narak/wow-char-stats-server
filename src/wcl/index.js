@@ -8,7 +8,7 @@ import api from '../utils/api';
 import useLocalStorage from '../utils/useLocalStorage';
 import useWCLCharStats from '../utils/useWCLCharStats';
 import exportToCSV from '../utils/exportToCSV';
-import { byBoss, getRows, getData } from '../helpers/consolidateWCLStats';
+import { byChar, getRows, getData } from '../helpers/consolidateWCLStats';
 import { dropCache } from '../utils/promiseCache';
 
 import { Layout, Table, Button } from 'antd';
@@ -74,7 +74,7 @@ function Index({ id, chars, setChars }) {
 			: null;
 
 	const stats = useMemo(() => {
-		return byBoss(allStats);
+		return byChar(allStats);
 	}, [allStats]);
 
 	useEffect(() => {

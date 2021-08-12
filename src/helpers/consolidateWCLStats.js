@@ -13,8 +13,8 @@ function calcRanks({ byBoss, bosses }) {
   // console.log(byBoss, bosses);
 }
 
-export function byBoss(allStats) {
-  let byBoss = {},
+export function byChar(allStats) {
+  let byChar = {},
     bosses = {},
     syncedAt = {};
 
@@ -28,7 +28,7 @@ export function byBoss(allStats) {
     syncedAt[name] = val.syncedAt;
 
     // eslint-disable-next-line
-    byBoss[name] = rankings
+    byChar[name] = rankings
       ? rankings.reduce((acc, rank) => {
           const boss = rank.encounter.name;
 
@@ -37,10 +37,9 @@ export function byBoss(allStats) {
           }
 
           acc[boss] = {
-            boss,
-            bestAmount: rank.bestAmount.toFixed(2),
+            bestAmount: rank.bestAmount,
             bestSpec: rank.bestSpec,
-            rankPercent: rank.rankPercent?.toFixed(2),
+            rankPercent: rank.rankPercent,
           };
           return acc;
         }, {})
@@ -49,7 +48,7 @@ export function byBoss(allStats) {
       : undefined;
   }
 
-  const o = { byBoss: byBoss, bosses: Object.keys(bosses), syncedAt };
+  const o = { byChar: byChar, bosses: Object.keys(bosses), syncedAt };
   calcRanks(o);
   return o;
 }
@@ -71,8 +70,8 @@ export function getRows({ stats, bossMap, onDelete }) {
             } else {
               return (
                 <>
-                  <Tooltip placement="bottom" title={`${rec.rankPercent}%`}>
-                    {rec.bestAmount}
+                  <Tooltip placement="bottom" title={`${rec.rankPercent?.toFixed(2)}%`}>
+                    {rec.bestAmount.toFixed(2)}
                     <br />
                     <small>{rec.bestSpec}</small>
                   </Tooltip>
@@ -81,7 +80,7 @@ export function getRows({ stats, bossMap, onDelete }) {
             }
           },
           sorter: (a, b) => {
-            return a[boss].value - b[boss].value;
+            return a[boss].bestAmount - b[boss].bestAmount;
           },
         });
       }
@@ -129,7 +128,7 @@ export function getData({ stats, chars, bossMap, id: zoneId, difficulty }) {
   if (stats.bosses.length) {
     chars.forEach(char => {
       const { name } = char;
-      const bossStats = stats.byBoss[name];
+      const bossStats = stats.byChar[name];
       if (bossStats && !bossStats.isError) {
         dataSource.push({
           Name: name,
