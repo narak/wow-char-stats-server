@@ -8,7 +8,7 @@ import api from '../utils/api';
 import useLocalStorage from '../utils/useLocalStorage';
 import useWCLCharStats from '../utils/useWCLCharStats';
 import exportToCSV from '../utils/exportToCSV';
-import { byChar, getRows, getData } from '../helpers/consolidateWCLStats';
+import { byChar, getCols, getData, getRanks } from '../helpers/consolidateWCLStats';
 import { dropCache } from '../utils/promiseCache';
 
 import { Layout, Table, Button } from 'antd';
@@ -41,7 +41,6 @@ export default function ProviderChars(props) {
 		const resp = await api.put('/chars/' + props.id, {
 			characters,
 		});
-		console.log(resp);
 		if (resp.status === 200) {
 			apiSetChars(resp.data.characters);
 		}
@@ -117,7 +116,7 @@ function Index({ id, chars, setChars }) {
 	);
 
 	const columns = useMemo(() => {
-		return getRows({ stats, bossMap, onDelete });
+		return getCols({ stats, bossMap, onDelete, hightlightClassName: styles.ranked });
 	}, [stats, bossMap, onDelete]);
 
 	const [dataSource, failedChars] = useMemo(() => {
