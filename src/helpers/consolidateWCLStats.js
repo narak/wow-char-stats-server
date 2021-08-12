@@ -29,20 +29,21 @@ export function byBoss(allStats) {
 
     // eslint-disable-next-line
     byBoss[name] = rankings
-      ? rankings.map(rank => {
+      ? rankings.reduce((acc, rank) => {
           const boss = rank.encounter.name;
 
           if (!bosses[boss]) {
             bosses[boss] = true;
           }
 
-          return {
+          acc[boss] = {
             boss,
-            bestAmount: rank.bestAmount,
+            bestAmount: rank.bestAmount.toFixed(2),
             bestSpec: rank.bestSpec,
-            rankPercent: rank.rankPercent,
+            rankPercent: rank.rankPercent?.toFixed(2),
           };
-        })
+          return acc;
+        }, {})
       : val.isError
       ? val
       : undefined;
@@ -71,10 +72,10 @@ export function getRows({ stats, bossMap, onDelete }) {
               return (
                 <>
                   <Tooltip placement="bottom" title={`${rec.rankPercent}%`}>
-                    {rec.value}
+                    {rec.bestAmount}
+                    <br />
+                    <small>{rec.bestSpec}</small>
                   </Tooltip>
-                  <br />
-                  <small>{rec.spec}</small>
                 </>
               );
             }
@@ -137,16 +138,7 @@ export function getData({ stats, chars, bossMap, id: zoneId, difficulty }) {
           zoneId,
           difficulty,
           ...char,
-          ...bossStats.reduce((acc, val) => {
-            if (!bossMap || bossMap[val.boss]) {
-              acc[val.boss] = {
-                value: val.bestAmount.toFixed(2),
-                spec: val.bestSpec,
-                rankPercent: val.rankPercent?.toFixed(2),
-              };
-            }
-            return acc;
-          }, {}),
+          ...bossStats,
         });
       } else {
         failedChars.push(bossStats);
