@@ -8,3 +8,9 @@
 :global(td.ant-table-column-sort).ranked {
   background: hsla(195deg, 49%, 22%, 0.7);
 }
+
+.tooltip {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-column-gap: 8px;
+}

@@ -116,7 +116,13 @@ function Index({ id, chars, setChars }) {
 	);
 
 	const columns = useMemo(() => {
-		return getCols({ stats, bossMap, onDelete, hightlightClassName: styles.ranked });
+		return getCols({
+			stats,
+			bossMap,
+			onDelete,
+			hightlightClassName: styles.ranked,
+			tooltipClassName: styles.tooltip,
+		});
 	}, [stats, bossMap, onDelete]);
 
 	const [dataSource, failedChars] = useMemo(() => {

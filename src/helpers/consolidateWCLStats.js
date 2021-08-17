@@ -82,6 +82,7 @@ export function byChar(allStats) {
           bestAmount: rank.bestAmount,
           bestSpec: rank.bestSpec,
           rankPercent: rank.rankPercent,
+          medianPercent: rank.medianPercent,
         };
       });
     } else {
@@ -92,7 +93,7 @@ export function byChar(allStats) {
   return { byChar, byBoss, bosses: Object.keys(bosses), syncedAt };
 }
 
-export function getCols({ stats, bossMap, onDelete, hightlightClassName }) {
+export function getCols({ stats, bossMap, onDelete, hightlightClassName, tooltipClassName }) {
   let columns;
   if (stats.bosses.length) {
     columns = stats.bosses.reduce((acc, boss) => {
@@ -112,7 +113,17 @@ export function getCols({ stats, bossMap, onDelete, hightlightClassName }) {
                 },
                 children: (
                   <>
-                    <Tooltip placement="bottom" title={`${rec.rankPercent?.toFixed(2)}%`}>
+                    <Tooltip
+                      placement="bottom"
+                      title={
+                        <small className={tooltipClassName}>
+                          <div>Best</div>
+                          <div>{rec.rankPercent?.toFixed(2)}%</div>
+                          <div>Median</div>
+                          <div>{rec.medianPercent?.toFixed(2)}%</div>
+                        </small>
+                      }
+                    >
                       {rec.bestAmount.toFixed(2)}
                       <br />
                       <small>{rec.bestSpec}</small>
