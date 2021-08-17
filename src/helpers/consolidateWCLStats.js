@@ -84,8 +84,6 @@ export function byChar(allStats) {
           rankPercent: rank.rankPercent,
         };
       });
-    } else if (val?.isError) {
-      byChar[name] = val.isError;
     } else {
       byChar[name] = val;
     }
