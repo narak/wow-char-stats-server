@@ -16,6 +16,10 @@ export function getRanks({ byChar, bosses, byBoss }, chars) {
   bosses.forEach(boss => {
     chars.forEach(({ name }) => {
       const o = byBoss[boss][name];
+      if (!o) {
+        return;
+      }
+
       o.name = name;
 
       let sorted = sortedByBoss[boss];
@@ -101,7 +105,7 @@ export function getCols({ stats, bossMap, onDelete, hightlightClassName }) {
           key: boss,
           render: (text, record, index) => {
             const rec = record.bossStats[boss];
-            if (rec.bestAmount === 0) {
+            if (!rec || rec.bestAmount === 0) {
               return null;
             } else {
               return {
