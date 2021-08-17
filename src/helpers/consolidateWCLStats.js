@@ -125,7 +125,7 @@ export function getCols({ stats, bossMap, onDelete, hightlightClassName }) {
             }
           },
           sorter: (a, b) => {
-            return a.bossStats[boss].bestAmount - b.bossStats[boss].bestAmount;
+            return a.bossStats[boss]?.bestAmount - b.bossStats[boss]?.bestAmount;
           },
         });
       }
