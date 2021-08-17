@@ -4,6 +4,7 @@
   top: 50px;
 }
 
-.ranked {
-  background: #283e23;
+.ranked,
+:global(td.ant-table-column-sort).ranked {
+  background: hsla(195deg, 49%, 22%, 0.7);
 }
