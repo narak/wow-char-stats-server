@@ -161,6 +161,9 @@ export function getCols({ stats, bossMap, onDelete, hightlightClassName, tooltip
           </>
         );
       },
+      sorter: (a, b) => {
+        return a.Name.toLowerCase() > b.Name.toLowerCase() ? 1 : -1;
+      },
     },
     ...columns,
     {
