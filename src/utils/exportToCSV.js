@@ -3,8 +3,11 @@ export default function exportToCSV(columns, rows) {
   const data = rows.map(data => {
     return header
       .map(key => {
-        const d = data[key];
-        return d ? (d.value ? d.value : d) : undefined;
+        if (key === 'Name') {
+          return data.Name;
+        }
+        const d = data[key] || data.bossStats[key];
+        return d ? (d.bestAmount ? d.bestAmount.toFixed(2) : 0) : undefined;
       })
       .join(',');
   });
