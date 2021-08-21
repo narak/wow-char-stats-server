@@ -62,23 +62,11 @@ function Index({ id, chars, setChars }) {
 	});
 	const { id: zoneId } = zone;
 	const [bosses, setBosses] = useLocalStorage('wlBosses', {});
-	const allStats = useWCLCharStats({ zone, chars });
 
-	const bossMap =
-		bosses[zoneId] && bosses[zoneId].length
-			? bosses[zoneId].reduce((acc, boss) => {
-					acc[boss] = true;
-					return acc;
-			  }, {})
-			: null;
-
-	const stats = useMemo(() => {
-		return byChar(allStats);
-	}, [allStats]);
-
-	useEffect(() => {
-		window.wlDPSStats = stats;
-	}, [stats]);
+	function onDropCache() {
+		dropCache();
+		window.location.reload();
+	}
 
 	function onAdd(char) {
 		let { name, server, region } = char;
@@ -115,6 +103,24 @@ function Index({ id, chars, setChars }) {
 		[setChars, chars]
 	);
 
+	const allStats = useWCLCharStats({ zone, chars });
+
+	const bossMap =
+		bosses[zoneId] && bosses[zoneId].length
+			? bosses[zoneId].reduce((acc, boss) => {
+					acc[boss] = true;
+					return acc;
+			  }, {})
+			: null;
+
+	const stats = useMemo(() => {
+		return byChar(allStats);
+	}, [allStats]);
+
+	useEffect(() => {
+		window.wlDPSStats = stats;
+	}, [stats]);
+
 	const columns = useMemo(() => {
 		return getCols({
 			stats,
@@ -132,11 +138,6 @@ function Index({ id, chars, setChars }) {
 	const onGenerateCSV = useCallback(() => {
 		exportToCSV(columns, dataSource);
 	}, [columns, dataSource]);
-
-	function onDropCache() {
-		dropCache();
-		window.location.reload();
-	}
 
 	const scrollCfg = { x: 1500 };
 	if (typeof window !== 'undefined') {
