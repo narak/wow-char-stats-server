@@ -5,8 +5,8 @@ import { Zone, ZoneLabel, Difficulty, DifficultyLabel } from '../constants/Warcr
 import { Select } from 'antd';
 const { Option } = Select;
 
-const Zones = Object.keys(Zone);
-const Difficulties = Object.keys(Difficulty);
+const Zones = Object.keys(ZoneLabel);
+const Difficulties = Object.keys(DifficultyLabel);
 
 export default function ZoneSelector({ value, onChange }) {
   const { id, difficulty } = value;
