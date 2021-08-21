@@ -46,7 +46,7 @@ export function getRanks({ byChar, bosses, byBoss }, chars) {
   const topRankedCount = {};
   bosses.forEach(boss => {
     ranked[boss] = {};
-    sortedByBoss[boss].forEach((char, i) => {
+    sortedByBoss[boss]?.forEach((char, i) => {
       ranked[boss][char.name] = i + 1;
       if (!topRankedCount[char.name]) {
         topRankedCount[char.name] = 0;
