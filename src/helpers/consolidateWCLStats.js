@@ -9,6 +9,8 @@ function getWclUrl({ region, server, name, difficulty, zoneId }) {
   return `https://www.warcraftlogs.com/character/${region}/${server}/${name}#difficulty=${DifficultyId[difficulty]}&zone=${ZoneId[zoneId]}`;
 }
 
+const TOP_RANK = 14;
+
 export function getRanks({ byChar, bosses, byBoss }, chars) {
   // let st = performance.now();
   const sortedByBoss = {};
@@ -16,7 +18,7 @@ export function getRanks({ byChar, bosses, byBoss }, chars) {
   bosses.forEach(boss => {
     chars.forEach(({ name }) => {
       const o = byBoss[boss][name];
-      if (!o) {
+      if (!o || !o.bestAmount) {
         return;
       }
 
@@ -41,15 +43,22 @@ export function getRanks({ byChar, bosses, byBoss }, chars) {
   });
 
   const ranked = {};
+  const topRankedCount = {};
   bosses.forEach(boss => {
     ranked[boss] = {};
     sortedByBoss[boss].forEach((char, i) => {
       ranked[boss][char.name] = i + 1;
+      if (!topRankedCount[char.name]) {
+        topRankedCount[char.name] = 0;
+      }
+      if (ranked[boss][char.name] <= TOP_RANK) {
+        topRankedCount[char.name]++;
+      }
     });
   });
   // let et = (performance.now() - st).toFixed(3);
   // console.log(et + 'ms' /*, i*/);
-  return ranked;
+  return { ranked, topRankedCount };
 }
 
 export function byChar(allStats) {
@@ -109,7 +118,8 @@ export function getCols({ stats, bossMap, onDelete, hightlightClassName, tooltip
             } else {
               return {
                 props: {
-                  className: record.ranked[boss][record.Name] <= 14 ? hightlightClassName : '',
+                  className:
+                    record.ranked[boss][record.Name] <= TOP_RANK ? hightlightClassName : '',
                 },
                 children: (
                   <>
@@ -165,6 +175,17 @@ export function getCols({ stats, bossMap, onDelete, hightlightClassName, tooltip
         return a.Name.toLowerCase() > b.Name.toLowerCase() ? 1 : -1;
       },
     },
+    {
+      title: 'Top 14',
+      dataIndex: 'top14',
+      key: 'top14',
+      render: (text, record) => {
+        return record.topRankedCount[record.Name];
+      },
+      sorter: (a, b) => {
+        return a.topRankedCount[a.Name] - b.topRankedCount[b.Name];
+      },
+    },
     ...columns,
     {
       dataIndex: 'action',
@@ -181,7 +202,7 @@ export function getCols({ stats, bossMap, onDelete, hightlightClassName, tooltip
 export function getData({ stats, chars, bossMap, id: zoneId, difficulty }) {
   const dataSource = [];
   const failedChars = [];
-  const ranked = getRanks(stats, chars);
+  const { ranked, topRankedCount } = getRanks(stats, chars);
 
   if (stats.bosses.length) {
     chars.forEach(char => {
@@ -197,6 +218,7 @@ export function getData({ stats, chars, bossMap, id: zoneId, difficulty }) {
           ...char,
           bossStats,
           ranked,
+          topRankedCount,
         });
       } else {
         failedChars.push(bossStats);

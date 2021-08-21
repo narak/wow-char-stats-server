@@ -8,7 +8,7 @@ import api from '../utils/api';
 import useLocalStorage from '../utils/useLocalStorage';
 import useWCLCharStats from '../utils/useWCLCharStats';
 import exportToCSV from '../utils/exportToCSV';
-import { byChar, getCols, getData, getRanks } from '../helpers/consolidateWCLStats';
+import { byChar, getCols, getData } from '../helpers/consolidateWCLStats';
 import { dropCache } from '../utils/promiseCache';
 
 import { Layout, Table, Button } from 'antd';
