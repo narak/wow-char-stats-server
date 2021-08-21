@@ -1,0 +1,20 @@
+.bossGridRow,
+.bossGrid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+}
+
+.bossGridRow:hover {
+  background: #000;
+}
+
+.bossGridRow div,
+.bossGrid div {
+  padding: 3px 7px;
+}
+
+.bossGrid + .bossGrid,
+.bossGrid + .bossGridRow,
+.bossGridRow + .bossGridRow {
+  margin-top: 10px;
+}
