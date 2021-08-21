@@ -8,7 +8,6 @@ async function getCharById(req, res) {
 
 async function updateCharById(req, res) {
   const { id } = req.query;
-  console.log(req.body);
   if (req.body.characters) {
     const statsPage = await updateCharsById(id, req.body.characters);
     res.status(200).json({ characters: req.body.characters });
