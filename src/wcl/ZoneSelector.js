@@ -1,6 +1,6 @@
 import styles from './zoneselector.module.css';
 
-import { Zone, ZoneLabel, Difficulty, DifficultyLabel } from '../constants/WarcraftLogs';
+import { ZoneLabel, DifficultyLabel } from '../constants/WarcraftLogs';
 
 import { Select } from 'antd';
 const { Option } = Select;

@@ -11,7 +11,7 @@ function getWclUrl({ region, server, name, difficulty, zoneId }) {
 
 const TOP_RANK = 14;
 
-export function getRanks({ byChar, bosses, byBoss }, chars) {
+export function getRanks({ bosses, byBoss }, chars) {
   // let st = performance.now();
   const sortedByBoss = {};
 
@@ -68,34 +68,38 @@ export function byChar(allStats) {
     syncedAt = {};
 
   for (const key in allStats) {
-    const val = allStats[key];
+    if (allStats.hasOwnProperty(key)) {
+      const val = allStats[key];
 
-    if (val.isFetching) continue;
-    const name = val.name,
-      rankings = val.zoneRankings?.rankings;
+      if (val.isFetching) {
+        continue;
+      }
+      const name = val.name,
+        rankings = val.zoneRankings?.rankings;
 
-    syncedAt[name] = val.syncedAt;
+      syncedAt[name] = val.syncedAt;
 
-    // eslint-disable-next-line
-    byChar[name] = {};
+      // eslint-disable-next-line
+      byChar[name] = {};
 
-    if (rankings) {
-      rankings.forEach(rank => {
-        const boss = rank.encounter.name;
+      if (rankings) {
+        rankings.forEach(rank => {
+          const boss = rank.encounter.name;
 
-        if (!bosses[boss]) {
-          bosses[boss] = true;
-        }
-        byBoss[boss] = byBoss[boss] || {};
-        byBoss[boss][name] = byChar[name][boss] = {
-          bestAmount: rank.bestAmount,
-          bestSpec: rank.bestSpec,
-          rankPercent: rank.rankPercent,
-          medianPercent: rank.medianPercent,
-        };
-      });
-    } else {
-      byChar[name] = val;
+          if (!bosses[boss]) {
+            bosses[boss] = true;
+          }
+          byBoss[boss] = byBoss[boss] || {};
+          byBoss[boss][name] = byChar[name][boss] = {
+            bestAmount: rank.bestAmount,
+            bestSpec: rank.bestSpec,
+            rankPercent: rank.rankPercent,
+            medianPercent: rank.medianPercent,
+          };
+        });
+      } else {
+        byChar[name] = val;
+      }
     }
   }
 
@@ -111,7 +115,7 @@ export function getCols({ stats, bossMap, onDelete, hightlightClassName, tooltip
           title: ShortName[boss],
           dataIndex: boss,
           key: boss,
-          render: (text, record, index) => {
+          render: (text, record) => {
             const rec = record.bossStats[boss];
             if (!rec || rec.bestAmount === 0) {
               return null;
@@ -160,7 +164,7 @@ export function getCols({ stats, bossMap, onDelete, hightlightClassName, tooltip
       dataIndex: 'name',
       key: 'Name',
       fixed: 'left',
-      render: (text, record) => {
+      render: function Name(text, record) {
         return (
           <>
             <a href={getWclUrl(record)} target="_blank" rel="noreferrer">
@@ -192,14 +196,14 @@ export function getCols({ stats, bossMap, onDelete, hightlightClassName, tooltip
       key: 'action',
       fixed: 'right',
       width: '50px',
-      render: (text, record) => {
+      render: function Actions(text, record) {
         return <DeleteFilled onClick={onDelete.bind(this, record.name)} />;
       },
     },
   ];
 }
 
-export function getData({ stats, chars, bossMap, id: zoneId, difficulty }) {
+export function getData({ stats, chars, id: zoneId, difficulty }) {
   const dataSource = [];
   const failedChars = [];
   const { ranked, topRankedCount } = getRanks(stats, chars);

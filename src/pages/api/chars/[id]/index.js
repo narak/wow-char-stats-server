@@ -3,14 +3,14 @@ import { getCharsById, updateCharsById } from '../../../../api/firebase';
 async function getCharById(req, res) {
   const { id } = req.query;
   const statsPage = await getCharsById(id);
-  res.status(200).json({ characters: statsPage.get('characters') });
+  res.status(200).json(statsPage);
 }
 
 async function updateCharById(req, res) {
   const { id } = req.query;
   if (req.body.characters) {
     const statsPage = await updateCharsById(id, req.body.characters);
-    res.status(200).json({ characters: req.body.characters });
+    res.status(200).json(statsPage);
   } else {
     res.status(400).json({ message: 'Missing characters to be updated' });
   }

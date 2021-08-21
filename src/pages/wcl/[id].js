@@ -4,7 +4,7 @@ import Head from 'next/head';
 import Layout, { Tabs } from '../../common/Layout';
 import WarcraftLogs from '../../wcl';
 
-export default function WCLById(req) {
+export default function WCLById() {
   const router = useRouter();
   return (
     <>

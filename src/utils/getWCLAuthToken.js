@@ -37,7 +37,7 @@ function isTokenValid() {
   return _token && Date.now() < _tokenExpiresOn - 10000;
 }
 
-export default function getWCLAuthToken(req, res) {
+export default function getWCLAuthToken() {
   return new Promise(resolve => {
     if (isTokenValid()) {
       console.log('Cached WCLAuthToken');

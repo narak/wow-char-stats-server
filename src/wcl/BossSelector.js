@@ -5,7 +5,7 @@ import Immutable from 'immutable';
 import { Modal, Select, Checkbox, Button } from 'antd';
 const { Option } = Select;
 
-import { Difficulty, DifficultyLabel } from '../constants/WarcraftLogs';
+import { DifficultyLabel } from '../constants/WarcraftLogs';
 
 export default function BossSelector({ bosses = [], value = [], onChange }) {
   const [absVisibility, setABSVisibility] = useState(false);
@@ -14,7 +14,6 @@ export default function BossSelector({ bosses = [], value = [], onChange }) {
   function onClose() {
     setABSVisibility(false);
   }
-  function onCancel() {}
   function onSelect(boss, diff) {
     setSelected(value => {
       return value.setIn([boss, diff], true);
