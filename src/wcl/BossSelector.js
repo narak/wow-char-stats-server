@@ -49,16 +49,16 @@ export default function BossSelector({ bosses = [], value = [], onChange }) {
         <div className={styles.bossGrid}>
           <div />
           {Object.keys(DifficultyLabel).map(key => (
-            <div>
+            <div key={key}>
               <Checkbox /> {DifficultyLabel[key]}
             </div>
           ))}
         </div>
         {bosses.map(boss => (
-          <div className={styles.bossGridRow}>
+          <div className={styles.bossGridRow} key={boss}>
             <div>{boss}</div>
             {Object.keys(DifficultyLabel).map(key => (
-              <div>
+              <div key={key}>
                 <Checkbox
                   value={selected.getIn([boss, key]) || undefined}
                   onChange={onSelect.bind(this, boss, key)}
