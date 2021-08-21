@@ -56,10 +56,21 @@ export default function ProviderChars(props) {
 }
 
 function Index({ id, chars, setChars }) {
-	const [zone, setZone] = useLocalStorage('wlZone', {
-		id: Zone.SOD,
-		difficulty: Difficulty.Heroic,
-	});
+	const [zone, setZone] = useLocalStorage(
+		'wlZone',
+		{
+			id: Zone.SOD,
+			difficulty: Difficulty.Heroic,
+		},
+		val => {
+			// we used to store 'Heroic|Normal', etc. in the LS first. Now we store "H|N", etc.
+			// This is to mitigate that.
+			if (Difficulty[val.difficulty]) {
+				val.difficulty = Difficulty[val.difficulty];
+			}
+			return val;
+		}
+	);
 	const { id: zoneId } = zone;
 	const [bosses, setBosses] = useLocalStorage('wlBosses', {});
 
