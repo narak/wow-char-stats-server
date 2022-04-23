@@ -9,4 +9,10 @@ export const ShortName = {
     'Fatescribe Roh-Kalo': 'Fatescribe',
     "Kel'Thuzad": 'KT',
     'Sylvanas Windrunner': 'Sylvanas',
+    'Dausegne, the Fallen Oracle': 'Dausegne',
+    "Artificer Xy'mox": "Artificer",
+    'Skolex, the Insatiable Ravener': 'Skolex',
+    'Halondrus the Reclaimer': 'Halondrus',
+    'Lihuvim, Principal Architect': 'Lihuvim',
+    'Anduin Wrynn': 'Anduin',
 };

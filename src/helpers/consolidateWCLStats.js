@@ -108,7 +108,7 @@ export function getCols({ stats, bossMap, onDelete, hightlightClassName, tooltip
     columns = stats.bosses.reduce((acc, boss) => {
       if (!bossMap || bossMap[boss]) {
         acc.push({
-          title: ShortName[boss],
+          title: ShortName[boss] || boss,
           dataIndex: boss,
           key: boss,
           render: (text, record, index) => {
