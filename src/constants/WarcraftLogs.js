@@ -1,14 +1,17 @@
 export const Zone = {
   SOD: 'SOD',
   CN: 'CN',
+  SotFO: 'SotFO',
 };
 
 export const ZoneLabel = {
+  [Zone.SotFO]: 'Sepulcher of the First Ones',
   [Zone.SOD]: 'Sanctum of Domination',
   [Zone.CN]: 'Castle Nathria',
 };
 
 export const ZoneId = {
+  [Zone.SotFO]: 29,
   [Zone.SOD]: 28,
   [Zone.CN]: 26,
 };
